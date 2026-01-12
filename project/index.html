@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Умный список дел для команды | Lean-доска</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-tasks"></i> Умный список дел для команды</h1>
+            <p class="subtitle">Lean-доска для эффективного управления задачами команды</p>
+            <p class="subtitle"><i class="fas fa-info-circle"></i> Данные автоматически сохраняются в вашем браузере</p>
+        </header>
+
+        <div class="board-container">
+            <!-- Текущие задачи -->
+            <div class="column todo" id="todo-column">
+                <div class="column-header">
+                    <h2 class="column-title">
+                        <i class="fas fa-clipboard-list"></i> Текущие задачи
+                        <span class="task-count" id="todo-count">0</span>
+                    </h2>
+                </div>
+                <div class="tasks-container" id="todo-tasks">
+                    <!-- Задачи будут добавляться сюда -->
+                </div>
+            </div>
+
+            <!-- В процессе -->
+            <div class="column in-progress" id="in-progress-column">
+                <div class="column-header">
+                    <h2 class="column-title">
+                        <i class="fas fa-spinner"></i> В процессе
+                        <span class="task-count" id="in-progress-count">0</span>
+                    </h2>
+                </div>
+                <div class="tasks-container" id="in-progress-tasks">
+                    <!-- Задачи будут добавляться сюда -->
+                </div>
+            </div>
+
+            <!-- Завершены -->
+            <div class="column done" id="done-column">
+                <div class="column-header">
+                    <h2 class="column-title">
+                        <i class="fas fa-check-circle"></i> Завершены
+                        <span class="task-count" id="done-count">0</span>
+                    </h2>
+                </div>
+                <div class="tasks-container" id="done-tasks">
+                    <!-- Задачи будут добавляться сюда -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Форма добавления новой задачи -->
+        <div class="add-task-form">
+            <h3 class="form-title"><i class="fas fa-plus-circle"></i> Добавить новую задачу</h3>
+            <form id="add-task-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="task-text">Текст задачи *</label>
+                        <textarea id="task-text" placeholder="Опишите задачу..." required></textarea>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="assignee">Исполнитель *</label>
+                        <select id="assignee" required>
+                            <option value="">Выберите исполнителя</option>
+                            <option value="Менеджер проекта">Менеджер проекта</option>
+                            <option value="Frontend-разработчик">Frontend-разработчик</option>
+                            <option value="Дизайнер">Дизайнер</option>
+                            <option value="Backend-разработчик">Backend-разработчик</option>
+                            <option value="Тестировщик">Тестировщик</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="due-date">Срок сдачи *</label>
+                        <input type="date" id="due-date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="status">Статус</label>
+                        <select id="status">
+                            <option value="todo">Текущие задачи</option>
+                            <option value="in-progress">В процессе</option>
+                            <option value="done">Завершены</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Добавить задачу
+                    <div class="task-actions">
+        </div>
+
+        <!-- Панель управления сохранением -->
+        <div class="save-controls">
+            <button class="btn btn-secondary" id="export-btn">
+                <i class="fas fa-download"></i> Экспорт данных
+            </button>
+            <button class="btn btn-success" id="import-btn">
+                <i class="fas fa-upload"></i> Импорт данных
+            </button>
+            <button class="btn btn-delete" id="clear-all-btn">
+                <i class="fas fa-trash-alt"></i> Очистить все
+            </button>
+        </div>
+
+        <!-- Скрытый input для импорта файлов -->
+        <input type="file" id="file-input" accept=".json" style="display: none;">
+
+        <footer>
+            <p>© 2025 Умный список дел для команды | Lean-доска </p>
+        </footer>
+    </div>
+
+    <script>
+        // Инициализация данных (примеры задач)
+        let tasks = [
+            {
+                id: 1,
+                text: "Разработать макеты главной страницы",
+                assignee: "Дизайнер",
+                dueDate: "2023-10-25",
+                status: "todo"
+            },
+            {
+                id: 2,
+                text: "Написать API для модуля пользователей",
+                assignee: "Backend-разработчик",
+                dueDate: "2023-10-20",
+                status: "in-progress"
+            },
+            {
+                id: 3,
+                text: "Создать компонент навигации",
+                assignee: "Frontend-разработчик",
+                dueDate: "2023-10-18",
+                status: "todo"
+            },
+            {
+                id: 4,
+                text: "Протестировать модуль авторизации",
+                assignee: "Тестировщик",
+                dueDate: "2023-10-15",
+                status: "done"
+            },
+            {
+                id: 5,
+                text: "Составить техническое задание",
+                assignee: "Менеджер проекта",
+                dueDate: "2023-10-10",
+                status: "done"
+            }
+        ];
+
+        // ==== ФУНКЦИИ ДЛЯ LOCALSTORAGE ====
+        
+        // Сохранение задач в LocalStorage
+        function saveTasksToLocalStorage() {
+            localStorage.setItem('teamTasks', JSON.stringify(tasks));
+            console.log('Задачи сохранены в LocalStorage');
+            showNotification('Задачи сохранены!', 'success');
+        }
+
+        // Загрузка задач из LocalStorage
+        function loadTasksFromLocalStorage() {
+            const savedTasks = localStorage.getItem('teamTasks');
+            if (savedTasks) {
+                try {
+                    tasks = JSON.parse(savedTasks);
+                    console.log('Задачи загружены из LocalStorage');
+                    showNotification('Задачи загружены!', 'success');
+                } catch (error) {
+                    console.error('Ошибка при загрузке задач:', error);
+                    showNotification('Ошибка при загрузке задач', 'error');
+                }
+            } else {
+                console.log('Нет сохраненных задач, используются данные по умолчанию');
+            }
+        }
+
+        // Экспорт задач в файл JSON
+        function exportTasksToFile() {
+            const dataStr = JSON.stringify(tasks, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            
+            const downloadLink = document.createElement('a');
+            downloadLink.href = URL.createObjectURL(dataBlob);
+            downloadLink.download = 'team-tasks-backup.json';
+            downloadLink.click();
+            
+            showNotification('Задачи экспортированы в файл!', 'success');
+        }
+
+        // Импорт задач из файла JSON
+        function importTasksFromFile(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const importedTasks = JSON.parse(e.target.result);
+                    if (Array.isArray(importedTasks)) {
+                        tasks = importedTasks;
+                        renderTasks();
+                        saveTasksToLocalStorage();
+                        showNotification('Задачи успешно импортированы!', 'success');
+                    } else {
+                        throw new Error('Неверный формат данных');
+                    }
+                } catch (error) {
+                    console.error('Ошибка при импорте файла:', error);
+                    showNotification('Ошибка при импорте файла: ' + error.message, 'error');
+                }
+            };
+            reader.readAsText(file);
+            
+            // Сбрасываем значение input, чтобы можно было выбрать тот же файл снова
+            event.target.value = '';
+        }
+
+        // Очистка всех задач
+        function clearAllTasks() {
+            if (confirm('Вы уверены, что хотите удалить все задачи? Это действие нельзя отменить.')) {
+                tasks = [];
+                renderTasks();
+                saveTasksToLocalStorage();
+                showNotification('Все задачи удалены', 'info');
+            }
+        }
+
+        // Показать уведомление
+        function showNotification(message, type) {
+            // Создаем элемент уведомления
+            const notification = document.createElement('div');
+            notification.textContent = message;
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 15px 20px;
+                border-radius: 5px;
+                color: white;
+                font-weight: 500;
+                z-index: 1000;
+                animation: slideIn 0.3s ease;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            `;
+            
+            if (type === 'success') {
+                notification.style.backgroundColor = '#27ae60';
+            } else if (type === 'error') {
+                notification.style.backgroundColor = '#e74c3c';
+            } else {
+                notification.style.backgroundColor = '#3498db';
+            }
+            
+            document.body.appendChild(notification);
+            
+            // Удаляем уведомление через 3 секунды
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+            
+            // Добавляем CSS анимации
+            if (!document.querySelector('#notification-styles')) {
+                const style = document.createElement('style');
+                style.id = 'notification-styles';
+                style.textContent = `
+                    @keyframes slideIn {
+                        from { transform: translateX(100%); opacity: 0; }
+                        to { transform: translateX(0); opacity: 1; }
+                    }
+                    @keyframes slideOut {
+                        from { transform: translateX(0); opacity: 1; }
+                        to { transform: translateX(100%); opacity: 0; }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+        }
+
+        // DOM элементы
+        const todoTasksContainer = document.getElementById('todo-tasks');
+        const inProgressTasksContainer = document.getElementById('in-progress-tasks');
+        const doneTasksContainer = document.getElementById('done-tasks');
+        const addTaskForm = document.getElementById('add-task-form');
+        const taskTextInput = document.getElementById('task-text');
+        const assigneeSelect = document.getElementById('assignee');
+        const dueDateInput = document.getElementById('due-date');
+        const statusSelect = document.getElementById('status');
+        const exportBtn = document.getElementById('export-btn');
+        const importBtn = document.getElementById('import-btn');
+        const clearAllBtn = document.getElementById('clear-all-btn');
+        const fileInput = document.getElementById('file-input');
+        
+        // Счетчики задач
+        const todoCount = document.getElementById('todo-count');
+        const inProgressCount = document.getElementById('in-progress-count');
+        const doneCount = document.getElementById('done-count');
+
+        // Переменные для drag and drop
+        let draggedTask = null;
+        let draggedTaskElement = null;
+
+        // Инициализация приложения
+        function initApp() {
+            loadTasksFromLocalStorage(); // Загружаем сохраненные задачи
+            renderTasks();
+            setupEventListeners();
+            updateTaskCounters();
+        }
+
+        // Отображение всех задач
+        function renderTasks() {
+            // Очищаем контейнеры
+            todoTasksContainer.innerHTML = '';
+            inProgressTasksContainer.innerHTML = '';
+            doneTasksContainer.innerHTML = '';
+            
+            // Если нет задач, показываем сообщение
+            const todoTasks = tasks.filter(task => task.status === 'todo');
+            const inProgressTasks = tasks.filter(task => task.status === 'in-progress');
+            const doneTasks = tasks.filter(task => task.status === 'done');
+            
+            if (todoTasks.length === 0) {
+                todoTasksContainer.innerHTML = '<div class="empty-state">Нет задач для отображения</div>';
+            }
+            
+            if (inProgressTasks.length === 0) {
+                inProgressTasksContainer.innerHTML = '<div class="empty-state">Нет задач для отображения</div>';
+            }
+            
+            if (doneTasks.length === 0) {
+                doneTasksContainer.innerHTML = '<div class="empty-state">Нет задач для отображения</div>';
+            }
+            
+            // Рендерим задачи по колонкам
+            tasks.forEach(task => {
+                const taskElement = createTaskElement(task);
+                
+                switch(task.status) {
+                    case 'todo':
+                        todoTasksContainer.appendChild(taskElement);
+                        break;
+                    case 'in-progress':
+                        inProgressTasksContainer.appendChild(taskElement);
+                        break;
+                    case 'done':
+                        doneTasksContainer.appendChild(taskElement);
+                        break;
+                }
+            });
+            
+            updateTaskCounters();
+        }
+
+        // Создание элемента задачи
+        function createTaskElement(task) {
+            const taskElement = document.createElement('div');
+            taskElement.className = `task-card ${task.status}`;
+            taskElement.setAttribute('data-id', task.id);
+            taskElement.draggable = true;
+            
+            // Форматируем дату для отображения
+            const dueDate = new Date(task.dueDate);
+            const formattedDate = dueDate.toLocaleDateString('ru-RU', {
+                day: 'numeric',
+                month: 'long'
+            });
+            
+            // Получаем инициалы для аватара
+            const initials = task.assignee.split(' ').map(name => name[0]).join('').toUpperCase();
+            
+            taskElement.innerHTML = `
+                <div class="task-header">
+                    <div class="assignee">
+                        <div class="assignee-avatar">${initials}</div>
+                        <span>${task.assignee}</span>
+                    </div>
+                    <div class="task-actions">
+                        <button class="btn-action btn-delete-task" title="Удалить задачу">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="task-text">${task.text}</div>
+                <div class="task-footer">
+                    <div class="due-date">
+                        <i class="far fa-calendar-alt"></i> ${formattedDate}
+                    </div>
+                </div>
+                <div class="move-buttons">
+                    <button class="btn-move btn-move-left" ${task.status === 'todo' ? 'disabled' : ''}>
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <button class="btn-move btn-move-right" ${task.status === 'done' ? 'disabled' : ''}>
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            `;
+            
+            // Добавляем обработчики событий
+            const deleteBtn = taskElement.querySelector('.btn-delete-task');
+            deleteBtn.addEventListener('click', () => deleteTask(task.id));
+            
+            const moveLeftBtn = taskElement.querySelector('.btn-move-left');
+            const moveRightBtn = taskElement.querySelector('.btn-move-right');
+            
+            moveLeftBtn.addEventListener('click', () => moveTask(task.id, 'left'));
+            moveRightBtn.addEventListener('click', () => moveTask(task.id, 'right'));
+            
+            // Drag and drop события
+            taskElement.addEventListener('dragstart', handleDragStart);
+            taskElement.addEventListener('dragend', handleDragEnd);
+            
+            return taskElement;
+        }
+
+        // Добавление новой задачи
+        function addTask(text, assignee, dueDate, status) {
+            const newTask = {
+                id: Date.now(), // Простой способ генерации ID
+                text,
+                assignee,
+                dueDate,
+                status
+            };
+            
+            tasks.push(newTask);
+            saveTasksToLocalStorage(); // Сохраняем после добавления
+            renderTasks();
+            resetForm();
+        }
+
+        // Удаление задачи
+        function deleteTask(id) {
+            if (confirm('Вы уверены, что хотите удалить эту задачу?')) {
+                tasks = tasks.filter(task => task.id !== id);
+                saveTasksToLocalStorage(); // Сохраняем после удаления
+                renderTasks();
+                showNotification('Задача удалена', 'info');
+            }
+        }
+
+        // Перемещение задачи между колонками
+        function moveTask(id, direction) {
+            const taskIndex = tasks.findIndex(task => task.id === id);
+            if (taskIndex === -1) return;
+            
+            const task = tasks[taskIndex];
+            let newStatus = task.status;
+            
+            if (direction === 'left') {
+                if (task.status === 'in-progress') newStatus = 'todo';
+                else if (task.status === 'done') newStatus = 'in-progress';
+            } else if (direction === 'right') {
+                if (task.status === 'todo') newStatus = 'in-progress';
+                else if (task.status === 'in-progress') newStatus = 'done';
+            }
+            
+            tasks[taskIndex].status = newStatus;
+            saveTasksToLocalStorage(); // Сохраняем после перемещения
+            renderTasks();
+        }
+
+        // Обновление счетчиков задач
+        function updateTaskCounters() {
+            const todoTasks = tasks.filter(task => task.status === 'todo');
+            const inProgressTasks = tasks.filter(task => task.status === 'in-progress');
+            const doneTasks = tasks.filter(task => task.status === 'done');
+            
+            todoCount.textContent = todoTasks.length;
+            inProgressCount.textContent = inProgressTasks.length;
+            doneCount.textContent = doneTasks.length;
+        }
+
+        // Сброс формы
+        function resetForm() {
+            taskTextInput.value = '';
+            assigneeSelect.value = '';
+            dueDateInput.value = '';
+            statusSelect.value = 'todo';
+            
+            // Устанавливаем дату по умолчанию (завтра)
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            dueDateInput.valueAsDate = tomorrow;
+        }
+
+        // Drag and Drop обработчики
+        function handleDragStart(e) {
+            draggedTaskElement = this;
+            draggedTask = tasks.find(task => task.id == this.getAttribute('data-id'));
+            
+            this.classList.add('dragging');
+            
+            // Устанавливаем данные для переноса
+            e.dataTransfer.setData('text/plain', this.getAttribute('data-id'));
+            e.dataTransfer.effectAllowed = 'move';
+        }
+
+        function handleDragEnd() {
+            this.classList.remove('dragging');
+            draggedTask = null;
+            draggedTaskElement = null;
+            
+            // Убираем стили с колонок
+            const columns = document.querySelectorAll('.tasks-container');
+            columns.forEach(col => col.classList.remove('over'));
+        }
+
+        // Настройка обработчиков событий для колонок
+        function setupColumnEvents() {
+            const columns = document.querySelectorAll('.tasks-container');
+            
+            columns.forEach(column => {
+                column.addEventListener('dragover', function(e) {
+                    e.preventDefault();
+                    this.classList.add('over');
+                });
+                
+                column.addEventListener('dragleave', function() {
+                    this.classList.remove('over');
+                });
+                
+                column.addEventListener('drop', function(e) {
+                    e.preventDefault();
+                    this.classList.remove('over');
+                    
+                    if (!draggedTask) return;
+                    
+                    // Определяем новую колонку
+                    const columnId = this.parentElement.id;
+                    let newStatus = 'todo';
+                    
+                    if (columnId === 'in-progress-column') newStatus = 'in-progress';
+                    else if (columnId === 'done-column') newStatus = 'done';
+                    
+                    // Обновляем статус задачи
+                    const taskIndex = tasks.findIndex(task => task.id === draggedTask.id);
+                    if (taskIndex !== -1) {
+                        tasks[taskIndex].status = newStatus;
+                        saveTasksToLocalStorage(); // Сохраняем после перетаскивания
+                        renderTasks();
+                    }
+                });
+            });
+        }
+
+        // Настройка всех обработчиков событий
+        function setupEventListeners() {
+            // Обработчик отправки формы
+            addTaskForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                if (!taskTextInput.value.trim() || !assigneeSelect.value || !dueDateInput.value) {
+                    alert('Пожалуйста, заполните все обязательные поля');
+                    return;
+                }
+                
+                addTask(
+                    taskTextInput.value.trim(),
+                    assigneeSelect.value,
+                    dueDateInput.value,
+                    statusSelect.value
+                );
+            });
+            
+            // Устанавливаем завтрашнюю дату по умолчанию
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            dueDateInput.valueAsDate = tomorrow;
+            
+            // Кнопка экспорта
+            exportBtn.addEventListener('click', exportTasksToFile);
+            
+            // Кнопка импорта
+            importBtn.addEventListener('click', () => {
+                fileInput.click();
+            });
+            
+            // Обработчик выбора файла для импорта
+            fileInput.addEventListener('change', importTasksFromFile);
+            
+            // Кнопка очистки всех задач
+            clearAllBtn.addEventListener('click', clearAllTasks);
+            
+            // Настройка drag and drop для колонок
+            setupColumnEvents();
+        }
+
+        // Запуск приложения
+        document.addEventListener('DOMContentLoaded', initApp);
+    </script>
+</body>
+</html>
