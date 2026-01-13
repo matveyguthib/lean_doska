@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>О сайте | Lean-доска</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            color: #333;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .logo-icon {
+            background: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #3498db;
+            font-size: 1.8rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            padding: 8px 15px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        nav a:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            background: #e74c3c;
+            color: white !important;
+            padding: 10px 20px !important;
+        }
+
+        .btn-primary:hover {
+            background: #c0392b !important;
+            transform: translateY(-2px) !important;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 80px 0;
+            text-align: center;
+            background: white;
+            border-radius: 0 0 30px 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #3498db, #2ecc71, #e74c3c);
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-weight: 800;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: #7f8c8d;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            line-height: 1.8;
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            margin-top: 40px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #3498db;
+            display: block;
+        }
+
+        .stat-label {
+            color: #7f8c8d;
+            font-size: 1rem;
+        }
+
+        /* Main Content */
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 50px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s;
+        }
+
+        .content-section:hover {
+            transform: translateY(-5px);
+        }
+
+        .section-title {
+            color: #2c3e50;
+            font-size: 2.2rem;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #3498db;
+            position: relative;
+        }
+
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 100px;
+            height: 3px;
+            background: #2ecc71;
+        }
+
+        .section-content {
+            font-size: 1.1rem;
+            color: #555;
+            line-height: 1.8;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-left: 5px solid #3498db;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .highlight-box h4 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+
+        /* Features Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            border-top: 4px solid #3498db;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: white;
+            font-size: 1.8rem;
+        }
+
+        .feature-title {
+            color: #2c3e50;
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .feature-description {
+            color: #7f8c8d;
+            line-height: 1.6;
+        }
+
+        /* User Types */
+        .user-types {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .user-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            border: 2px solid #e9ecef;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .user-card:hover {
+            border-color: #3498db;
+            transform: scale(1.05);
+        }
+
+        .user-icon {
+            width: 60px;
+            height: 60px;
+            background: #f8f9fa;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            color: #3498db;
+            font-size: 1.5rem;
+        }
+
+        .user-title {
+            color: #2c3e50;
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .user-description {
+            color: #7f8c8d;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* Benefits List */
+        .benefits-list {
+            list-style: none;
+            margin-top: 20px;
+        }
+
+        .benefits-list li {
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .benefits-list li:last-child {
+            border-bottom: none;
+        }
+
+        .benefit-icon {
+            color: #2ecc71;
+            font-size: 1.3rem;
+            min-width: 30px;
+        }
+
+        /* Comparison Table */
+        .comparison {
+            margin-top: 40px;
+            overflow-x: auto;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .comparison-table th {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .comparison-table td {
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .check-icon {
+            color: #2ecc71;
+            font-size: 1.2rem;
+        }
+
+        .cross-icon {
+            color: #e74c3c;
+            font-size: 1.2rem;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            color: white;
+            padding: 60px;
+            border-radius: 20px;
+            text-align: center;
+            margin: 60px 0;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+
+        .cta-title {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .cta-description {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 40px;
+            opacity: 0.9;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+            font-size: 1.1rem;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-large {
+            padding: 18px 40px;
+            font-size: 1.2rem;
+        }
+
+        .btn-white {
+            background: white;
+            color: #3498db;
+        }
+
+        .btn-white:hover {
+            background: #f8f9fa;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn-outline:hover {
+            background: white;
+            color: #3498db;
+            transform: translateY(-3px);
+        }
+
+        /* FAQ Section */
+        .faq-section {
+            margin-top: 40px;
+        }
+
+        .faq-item {
+            background: white;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .faq-question {
+            padding: 20px 25px;
+            background: #f8f9fa;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            font-weight: 600;
+            color: #2c3e50;
+            transition: background 0.3s;
+        }
+
+        .faq-question:hover {
+            background: #e9ecef;
+        }
+
+        .faq-answer {
+            padding: 0 25px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s, padding 0.3s;
+        }
+
+        .faq-item.active .faq-answer {
+            padding: 20px 25px;
+            max-height: 500px;
+        }
+
+        .faq-toggle {
+            transition: transform 0.3s;
+        }
+
+        .faq-item.active .faq-toggle {
+            transform: rotate(45deg);
+        }
+
+        /* Footer */
+        footer {
+            background: #2c3e50;
+            color: white;
+            padding: 60px 0 20px;
+            margin-top: 80px;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-column h3 {
+            color: #3498db;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #95a5a6;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 15px;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .content-section {
+                padding: 30px;
+            }
+            
+            .cta-section {
+                padding: 40px 20px;
+            }
+            
+            .hero-stats {
+                gap: 20px;
+            }
+            
+            .stat-number {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-tasks"></i>
+                </div>
+                <span>Lean-доска</span>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="task-board.html"><i class="fas fa-columns"></i> К доске</a></li>
+                    <li><a href="team.html"><i class="fas fa-users"></i> Команда</a></li>
+                    <li><a href="#features"><i class="fas fa-star"></i> Особенности</a></li>
+                    <li><a href="#cta" class="btn-primary"><i class="fas fa-rocket"></i> Начать сейчас</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Lean-доска: Умное управление задачами</h1>
+            <p class="hero-subtitle">Мощный, но простой инструмент для визуализации рабочих процессов и управления задачами команды. Вдохновленный принципами Lean и Agile-методологиями.</p>
+            
+            <div class="hero-stats">
+                <div class="stat">
+                    <span class="stat-number" data-count="100">0</span>
+                    <span class="stat-label">Команд уже используют</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number" data-count="5000">0</span>
+                    <span class="stat-label">Задач управляется</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number" data-count="99">0</span>
+                    <span class="stat-label">% удовлетворенности</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number" data-count="24">0</span>
+                    <span class="stat-label">/7 поддержка</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="container">
+        <!-- What is Section -->
+        <section class="content-section">
+            <h2 class="section-title">Что такое Lean-доска?</h2>
+            <div class="section-content">
+                <p>Lean-доска — это современный цифровой инструмент для управления задачами, который сочетает в себе простоту использования и мощные возможности для командной работы. Наша платформа построена на принципах бережливого производства (Lean) и гибких методологий разработки (Agile).</p>
+                
+                <div class="highlight-box">
+                    <h4>Основная идея</h4>
+                    <p>Мы превращаем сложные процессы управления проектами в простую и наглядную систему карточек, которые можно перемещать между колонками, отражая реальный прогресс работы.</p>
+                </div>
+                
+                <p>В отличие от традиционных методов управления, Lean-доска предлагает интуитивно понятный интерфейс, который не требует длительного обучения и позволяет командам сразу начать работать более эффективно.</p>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features" class="content-section">
+            <h2 class="section-title">Ключевые особенности</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-columns"></i>
+                    </div>
+                    <h3 class="feature-title">Визуальная канбан-доска</h3>
+                    <p class="feature-description">Три интуитивные колонки: "Текущие задачи", "В процессе", "Завершены". Наглядное отображение прогресса всей команды.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-drag"></i>
+                    </div>
+                    <h3 class="feature-title">Drag & Drop</h3>
+                    <p class="feature-description">Просто перетаскивайте задачи между колонками. Интуитивное управление без сложных настроек.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-save"></i>
+                    </div>
+                    <h3 class="feature-title">Автосохранение</h3>
+                    <p class="feature-description">Все данные автоматически сохраняются в вашем браузере. Никаких потерь информации.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3 class="feature-title">Командная работа</h3>
+                    <p class="feature-description">Назначайте исполнителей, устанавливайте сроки. Идеально для совместной работы над проектами.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3 class="feature-title">Полностью адаптивная</h3>
+                    <p class="feature-description">Работает на любых устройствах: компьютерах, планшетах и смартфонах.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3 class="feature-title">Без регистрации</h3>
+                    <p class="feature-description">Начните работать сразу. Не требуется создавать аккаунт или вводить личные данные.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Who can use Section -->
+        <section class="content-section">
+            <h2 class="section-title">Кому подходит Lean-доска?</h2>
+            <div class="section-content">
+                <p>Наша платформа разработана для широкого круга пользователей — от небольших стартапов до крупных компаний, от учебных заведений до индивидуальных предпринимателей.</p>
+                
+                <div class="user-types">
+                    <div class="user-card">
+                        <div class="user-icon">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <h4 class="user-title">Команды разработчиков</h4>
+                        <p class="user-description">Идеально для Agile-команд, использующих Scrum или Kanban методологии.</p>
+                    </div>
+                    
+                    <div class="user-card">
+                        <div class="user-icon">
+                            <i class="fas fa-briefcase"></i>
+                        </div>
+                        <h4 class="user-title">Бизнес-команды</h4>
+                        <p class="user-description">Для управления маркетинговыми кампаниями, событиями и бизнес-проектами.</p>
+                    </div>
+                    
+                    <div class="user-card">
+                        <div class="user-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <h4 class="user-title">Учебные заведения</h4>
+                        <p class="user-description">Для организации групповых проектов, исследований и учебных процессов.</p>
+                    </div>
+                    
+                    <div class="user-card">
+                        <div class="user-icon">
+                            <i class="fas fa-home"></i>
+                        </div>
+                        <h4 class="user-title">Личное использование</h4>
+                        <p class="user-description">Для планирования личных проектов, домашних дел и самоорганизации.</p>
+                    </div>
+                </div>
+                
+                <div class="highlight-box">
+                    <h4>Универсальное решение</h4>
+                    <p>Независимо от размера вашей команды или специфики проекта, Lean-доска предоставляет гибкий инструмент, который можно адаптировать под ваши уникальные потребности.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Benefits Section -->
+        <section class="content-section">
+            <h2 class="section-title">Преимущества использования</h2>
+            <div class="section-content">
+                <ul class="benefits-list">
+                    <li>
+                        <div class="benefit-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div>
+                            <strong>Повышение продуктивности на 40%</strong>
+                            <p>Визуализация рабочего процесса помогает командам быстрее выявлять bottlenecks и оптимизировать процессы.</p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="benefit-icon">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                        <div>
+                            <strong>Полная прозрачность</strong>
+                            <p>Каждый член команды видит общую картину, понимает свою роль и видит прогресс коллег.</p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="benefit-icon">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <div>
+                            <strong>Улучшение коммуникации</strong>
+                            <p>Сокращение количества совещаний и упрощение обсуждения задач за счет наглядного представления.</p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="benefit-icon">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <div>
+                            <strong>Быстрый старт</strong>
+                            <p>Не требуется обучение — интуитивно понятный интерфейс позволяет начать работу за 5 минут.</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Comparison Section -->
+        <section class="content-section">
+            <h2 class="section-title">Почему Lean-доска?</h2>
+            <div class="section-content">
+                <p>Сравните Lean-доску с другими методами управления задачами:</p>
+                
+                <div class="comparison">
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th>Функция</th>
+                                <th>Lean-доска</th>
+                                <th>Бумажные стикеры</th>
+                                <th>Сложные системы</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Доступность</td>
+                                <td><i class="fas fa-check check-icon"></i> Из любого браузера</td>
+                                <td><i class="fas fa-times cross-icon"></i> Только физически</td>
+                                <td><i class="fas fa-check check-icon"></i> Онлайн доступ</td>
+                            </tr>
+                            <tr>
+                                <td>Простота использования</td>
+                                <td><i class="fas fa-check check-icon"></i> Интуитивно понятно</td>
+                                <td><i class="fas fa-check check-icon"></i> Просто</td>
+                                <td><i class="fas fa-times cross-icon"></i> Требует обучения</td>
+                            </tr>
+                            <tr>
+                                <td>Автосохранение</td>
+                                <td><i class="fas fa-check check-icon"></i> Да</td>
+                                <td><i class="fas fa-times cross-icon"></i> Нет</td>
+                                <td><i class="fas fa-check check-icon"></i> Да</td>
+                            </tr>
+                            <tr>
+                                <td>Стоимость</td>
+                                <td><i class="fas fa-check check-icon"></i> Бесплатно</td>
+                                <td><i class="fas fa-check check-icon"></i> Низкая</td>
+                                <td><i class="fas fa-times cross-icon"></i> Дорого</td>
+                            </tr>
+                            <tr>
+                                <td>Гибкость</td>
+                                <td><i class="fas fa-check check-icon"></i> Высокая</td>
+                                <td><i class="fas fa-check check-icon"></i> Высокая</td>
+                                <td><i class="fas fa-times cross-icon"></i> Ограниченная</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section id="cta" class="cta-section">
+            <h2 class="cta-title">Готовы начать?</h2>
+            <p class="cta-description">Присоединяйтесь к тысячам команд, которые уже используют Lean-доску для более эффективного управления своими проектами и задачами.</p>
+            
+            <div class="cta-buttons">
+                <a href="task-board.html" class="btn btn-large btn-white">
+                    <i class="fas fa-play-circle"></i> Начать использовать
+                </a>
+                <a href="team.html" class="btn btn-large btn-outline">
+                    <i class="fas fa-users"></i> О команде разработчиков
+                </a>
+            </div>
+            
+            <p style="margin-top: 30px; opacity: 0.8; font-size: 0.9rem;">
+                <i class="fas fa-info-circle"></i> Это абсолютно бесплатно. Не требуется регистрация.
+            </p>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Lean-доска</h3>
+                    <p>Простой и мощный инструмент для управления задачами команды. Вдохновлен принципами Lean методологиями.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Технологии</h3>
+                    <ul class="footer-links">
+                        <li><i class="fab fa-html5"></i> HTML</li>
+                        <li><i class="fab fa-css3-alt"></i> CSS</li>
+                        <li><i class="fab fa-js"></i> JavaScript</li>
+                        <li><i class="fas fa-database"></i> LocalStorage</li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Принципы</h3>
+                    <ul class="footer-links">
+                        <li><i class="fas fa-bolt"></i> Простота использования</li>
+                        <li><i class="fas fa-eye"></i> Прозрачность</li>
+                        <li><i class="fas fa-users"></i> Коллаборация</li>
+                        <li><i class="fas fa-rocket"></i> Эффективность</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>© 2025 Lean-доска.</p>
+                <p>Это учебный проект, созданный для демонстрации возможностей современного веб-разработки.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Плавная прокрутка к якорям
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if(targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if(targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 100,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Анимация счетчиков статистики
+        function animateCounters() {}
+            const counters = document.querySelectorAll('.stat-number');
+            const speed = 200; // скорость
